@@ -1,16 +1,24 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { Map } from './map';
+import { MapPage } from './map';
+
+import { GoogleMaps } from '@ionic-native/google-maps';
+import { MapData } from '../../providers/map-data';
+
 
 @NgModule({
   declarations: [
-    Map,
+    MapPage,
   ],
   imports: [
-    IonicPageModule.forChild(Map),
+    IonicPageModule.forChild(MapPage),
   ],
   exports: [
-    Map
+    MapPage
+  ],
+  providers: [
+    GoogleMaps,
+    MapData
   ]
 })
 export class MapModule {}
