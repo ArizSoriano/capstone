@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-navbar color="dark">
+  <ion-navbar color="danger">
     <ion-title>
-      Member Area
+      Name of app
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="logout()">
@@ -10,10 +10,30 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
- 
-<ion-content class="home" padding>
-  <h3>Welcome inside</h3>
-  <button ion-button block clear (click)="goToMap()">
-    Open Map
-  </button>
+
+<ion-content padding class="home">
+  <div class="home-container-active">
+    <div class="status">
+        <img src="img/warning.png" height="200px">
+        <p>ALERT</p>
+        <p>someone inside your car :O</p>
+    </div>
+
+    <button ion-button block class="alertBtn">Alert Authorities</button>
+    <button ion-button block class="safeBtn">Report Safe</button>
+    <button ion-button block (click)="goToMap()" class="locationBtn">Check car location</button>
+    <button ion-button block class="enableBtn">Enable sensor</button>
+    <button ion-button block class="disableBtn">Disable sensor</button>
+  </div>
+
+  <div class="home-container-inactive">
+    <div class="status">
+      <p>insert pic</p>
+        <p>Car is safe</p>
+    </div>
+
+    <button ion-button block class="enableBtn">Enable sensor</button>
+    <button ion-button block class="disableBtn">Disable sensor</button>
+  </div>
+
 </ion-content>
