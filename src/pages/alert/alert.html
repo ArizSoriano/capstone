@@ -15,23 +15,23 @@
 
 <ion-content padding>
 
-	<div class="prompt">
-	<p>Are you sure you want to alert the authorities?</p>
-	<p>This will send out your car's location blabla</p>
-	<button ion-button block>Yes</button>
-	<button ion-button block>Back to home</button>
+	<div class="prompt" *ngIf='reported == false && policeConfirmed == false'>
+		<p>Are you sure you want to alert the authorities?</p>
+		<p>This will send out your car's location blabla</p>
+		<button ion-button block (click)="report()" navPop>Yes</button>
+		<button ion-button block navPop>Back to home</button>
 	</div>
 
-	<div class="waiting">
-	<p>We have already notified the authorities. Awaiting their response.</p>
+	<div class="waiting" *ngIf='reported == true && policeConfirmed == false'>
+		<p>We have already notified the authorities. Awaiting their response.</p>
 
-	<button ion-button block>Cancel</button>
+		<button ion-button block (click)="cancelReport()">Cancel</button>
 	</div>
 
-	<div class="confirmed">
-	<p>The authorities are on it blabla</p>
+	<div class="confirmed" *ngIf='policeConfirmed == true'>
+		<p>The authorities are on it blabla</p>
 
-	<button ion-button block>Report safe</button>
+		<button ion-button block>Report safe</button>
 	</div>
 
 </ion-content>

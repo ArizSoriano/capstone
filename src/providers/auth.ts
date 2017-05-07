@@ -16,7 +16,7 @@ export class Auth {
 	    return firebase.auth().signInWithEmailAndPassword(email, password);
 	}
 
-	signupUser(email: string, password: string, latitude: number, longitude: number, alert: boolean): firebase.Promise<any> {
+	signupUser(email: string, password: string, latitude: number, longitude: number, alert: boolean, safe: boolean): firebase.Promise<any> {
 	    return firebase.auth().createUserWithEmailAndPassword(email, password)
 	    .then( newUser => {
 	        firebase.database().ref('/userProfile').child(newUser.uid)
@@ -24,7 +24,8 @@ export class Auth {
 	        	email: email,
 	        	latitude: latitude,
 	        	longitude: longitude,
-	        	alert: alert
+	        	alert: alert,
+	        	safe: safe
 	        });
 	  });
 	}

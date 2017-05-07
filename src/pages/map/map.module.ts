@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { MapPage } from './map';
 
 import { GoogleMaps } from '@ionic-native/google-maps';
-import { MapData } from '../../providers/map-data';
+import { Data } from '../../providers/data';
 
 
 @NgModule({
@@ -18,7 +18,7 @@ import { MapData } from '../../providers/map-data';
   ],
   providers: [
     GoogleMaps,
-    MapData
+    Data
   ]
 })
 export class MapModule {}

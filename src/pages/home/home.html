@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="danger">
+  <ion-navbar>
     <ion-title>
       Name of app
     </ion-title>
@@ -12,28 +12,32 @@
 </ion-header>
 
 <ion-content padding class="home">
-  <div class="home-container-active">
+  <div *ngIf='alertValue == true' class="home-container-active">
     <div class="status">
-        <img src="img/warning.png" height="200px">
         <p>ALERT</p>
-        <p>someone inside your car :O</p>
+        <p>someone inside your car</p>
     </div>
 
-    <button ion-button block class="alertBtn">Alert Authorities</button>
-    <button ion-button block class="safeBtn">Report Safe</button>
+    <button ion-button block (click)="alertAuthorities()" class="alertBtn">Alert Authorities</button>
+    <button ion-button block (click)='reportSafe()' class="safeBtn">Report Safe</button>
     <button ion-button block (click)="goToMap()" class="locationBtn">Check car location</button>
-    <button ion-button block class="enableBtn">Enable sensor</button>
-    <button ion-button block class="disableBtn">Disable sensor</button>
+    <button ion-button block (click)="disableSensor()" class="disableBtn">Disable sensor</button>
   </div>
 
-  <div class="home-container-inactive">
+  <div *ngIf='alertValue == false && sensorDisabled == false' class="home-container-inactive">
     <div class="status">
-      <p>insert pic</p>
-        <p>Car is safe</p>
+        <p>Car is safe.</p>
     </div>
 
-    <button ion-button block class="enableBtn">Enable sensor</button>
-    <button ion-button block class="disableBtn">Disable sensor</button>
+    <button ion-button (click)="disableSensor()" block class="disableBtn">Disable sensor</button>
+  </div>
+
+  <div *ngIf='alertValue == false && sensorDisabled == true' class="home-container-inactive">
+    <div class="status">
+      <p>Sensor is disabled.</p>
+    </div>
+
+    <button ion-button (click)="enableSensor()" block class="disableBtn">Enable sensor</button>
   </div>
 
 </ion-content>

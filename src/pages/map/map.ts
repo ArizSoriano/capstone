@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, Platform } from 'ionic-angular';
-import { MapData } from '../../providers/map-data';
-import firebase from 'firebase';
 import { Events } from 'ionic-angular';
+import firebase from 'firebase';
 
 import {
  GoogleMaps,
@@ -29,29 +28,29 @@ export class MapPage {
   longitude: any;
   userEmail = '';
 
-  constructor(private googleMaps: GoogleMaps, private platform: Platform, private navCtrl: NavController, private mapdata: MapData, private events: Events) {
 
-    //let that = this;
-    
+  alertsRef: any;
+  db: any;
+
+  constructor(private googleMaps: GoogleMaps, private platform: Platform, private navCtrl: NavController, private events: Events) {
+    this.db = firebase.database().ref('/');
+
     var user = firebase.auth().currentUser;
+    
+    var that = this;
 
-    if (user) {
-      this.userEmail = user.email;
-    }
-
-    //this.mapdata.mapcoordinates.subscribe((data) => {
-    //  if (this.userEmail == data.email) {
-    //    that.latitude = data.latitude;
-    //    that.longitude = data.longitude;
-    //    that.loadMap();
-    //  }
-    //}, (err) => {console.error(err);});
-
-    events.subscribe('coordinates', (latitude, longitude) =>  {
-      this.latitude = latitude;
-      this.longitude = longitude;
-      this.loadMap();
-    }, (err) => {console.error(err);});
+    this.alertsRef = firebase.database().ref('userProfile');
+    this.alertsRef.on('value', function(userData) {
+      var newData = userData.val();
+      
+      for (var key in newData) {
+        if (key == user.uid) {
+          that.latitude = parseFloat(newData[key].latitude);
+          that.longitude = parseFloat(newData[key].longitude);
+          that.loadMap();
+        }
+      } 
+    });
 
   }
 
