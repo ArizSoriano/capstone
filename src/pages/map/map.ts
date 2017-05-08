@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, Platform } from 'ionic-angular';
-import { Events } from 'ionic-angular';
+import { Geolocation } from '@ionic-native/geolocation';
+import { MapData } from '../../providers/map-data';
 import firebase from 'firebase';
+import { Events } from 'ionic-angular';
 
 import {
  GoogleMaps,
@@ -28,29 +30,32 @@ export class MapPage {
   longitude: any;
   userEmail = '';
 
+  constructor(private googleMaps: GoogleMaps, private platform: Platform, private geolocation: Geolocation, private navCtrl: NavController, private mapdata: MapData, private events: Events) {
 
-  alertsRef: any;
-  db: any;
-
-  constructor(private googleMaps: GoogleMaps, private platform: Platform, private navCtrl: NavController, private events: Events) {
-    this.db = firebase.database().ref('/');
-
-    var user = firebase.auth().currentUser;
+    let that = this;
     
-    var that = this;
+    var user = firebase.auth().currentUser;
 
-    this.alertsRef = firebase.database().ref('userProfile');
-    this.alertsRef.on('value', function(userData) {
-      var newData = userData.val();
-      
-      for (var key in newData) {
-        if (key == user.uid) {
-          that.latitude = parseFloat(newData[key].latitude);
-          that.longitude = parseFloat(newData[key].longitude);
-          that.loadMap();
-        }
-      } 
-    });
+    if (user) {
+      this.userEmail = user.email;
+    }
+
+    firebase.database().ref('userProfile/'+user.uid+'/latitude').once('value').then(
+      function(latitude) {
+        console.log(latitude.val());
+        that.latitude = latitude.val();
+      });
+
+    firebase.database().ref('userProfile/'+user.uid+'/longitude').once('value').then(
+      function(longitude) {
+        that.longitude = longitude.val();
+      });
+
+    events.subscribe('coordinates', (latitude, longitude) =>  {
+      this.latitude = latitude;
+      this.longitude = longitude;
+      this.loadMap();
+    }, (err) => {console.error(err);});
 
   }
 
@@ -77,33 +82,28 @@ export class MapPage {
            },
            'camera': {
              'latLng': location,
-             'zoom': 20
+             'zoom': 18
            }
          });
 
-        map.clear()
-
+        map.clear();
         map.setCenter(location);
-        
+
         let markerOptions: MarkerOptions = {
           position: location,
-          title: 'My Location'
+          title: 'My Location',
+          'icon': {
+              'url': 'http://meridianapps.com/images/icon_bludot@2x.png',
+              'size': {
+                  width: 60,
+                  height: 60
+               }
+          },
         };
 
-        const marker: any = map.addMarker(markerOptions).then((marker: Marker) => {
+        map.addMarker(markerOptions).then((marker: Marker) => {
           marker.showInfoWindow();
         });
-
-        const circle: any = map.addCircle({
-          'center' : location,
-          'radius' : 6,
-          'strokeColor' : '#abd6f4',
-          'strokeWidth': 1,
-          'fillColor' : '#abd6f4',
-          'zIndex' : 1
-        });
-
-
 
         map.on(GoogleMapsEvent.MAP_READY).subscribe(() => {
            console.log('Map is ready!');
