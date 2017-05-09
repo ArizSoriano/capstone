@@ -16,7 +16,7 @@ export class Auth {
 	    return firebase.auth().signInWithEmailAndPassword(email, password);
 	}
 
-	signupUser(email: string, password: string, latitude: number, longitude: number, alert: boolean, safe: boolean): firebase.Promise<any> {
+	signupUser(email: string, password: string, latitude: string, longitude: string, alert: boolean, police: boolean, policeConfirmed: boolean, reported: boolean, sensorDisabled: boolean): firebase.Promise<any> {
 	    return firebase.auth().createUserWithEmailAndPassword(email, password)
 	    .then( newUser => {
 	        firebase.database().ref('/userProfile').child(newUser.uid)
@@ -25,7 +25,10 @@ export class Auth {
 	        	latitude: latitude,
 	        	longitude: longitude,
 	        	alert: alert,
-	        	safe: safe
+	        	police: police,
+	        	policeConfirmed: policeConfirmed,
+	        	reported: reported,
+	        	sensorDisabled: sensorDisabled
 	        });
 	  });
 	}

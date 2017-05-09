@@ -14,6 +14,8 @@ export class MyApp {
   rootPage:any;
   zone:NgZone;
 
+  userData: any;
+
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public push: Push, public alertCtrl: AlertController) {
 
     firebase.initializeApp({
@@ -26,14 +28,27 @@ export class MyApp {
 
     this.zone = new NgZone({});
 
+    let that = this;
+
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       this.zone.run( () => {
         if (!user) {
           this.rootPage = 'login';
           unsubscribe();
         } else { 
-          this.rootPage = 'HomePage';
-          unsubscribe();
+
+          var isPolice = firebase.database().ref('userProfile/'+user.uid+'/police');
+
+          isPolice.once('value', function(police) {
+            if (police.val()) {
+              that.rootPage = 'police';
+              unsubscribe();
+            } else {
+              that.rootPage = 'HomePage';
+              unsubscribe();
+            }
+          });
+
         }
       });     
     });
@@ -74,7 +89,6 @@ export class MyApp {
   });
  
   pushObject.on('registration').subscribe((registration: any) => {
-     //do whatever you want with the registration ID
   });
  
   pushObject.on('error').subscribe(error => alert('Error with Push plugin' + error));

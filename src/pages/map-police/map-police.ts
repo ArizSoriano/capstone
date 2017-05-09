@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, Platform } from 'ionic-angular';
-import { Geolocation } from '@ionic-native/geolocation';
-import { MapData } from '../../providers/map-data';
-import firebase from 'firebase';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Events } from 'ionic-angular';
+import firebase from 'firebase';
 
 import {
  GoogleMaps,
@@ -14,57 +12,58 @@ import {
  Marker
 } from '@ionic-native/google-maps';
 
+/**
+ * Generated class for the MapPolice page.
+ *
+ * See http://ionicframework.com/docs/components/#navigation for more info
+ * on Ionic pages and navigation.
+ */
 @IonicPage({
-  name: 'map'
+	name: 'policemap'
 })
-
 @Component({
-  selector: 'page-map',
-  templateUrl: 'map.html',
+  selector: 'page-map-police',
+  templateUrl: 'map-police.html',
 })
+export class MapPolice {
+	
+  public userData: any;
 
-export class MapPage {
-  map: any;
+  userLat: any;
+  userLong: any;
+  userId: any;
 
-  latitude: any;
-  longitude: any;
-  userEmail = '';
+  constructor(public navCtrl: NavController, public navParams: NavParams, private events: Events, private googleMaps: GoogleMaps) {
+  	this.userData = navParams.get('data');
+  	console.log(this.userData);
 
-  constructor(private googleMaps: GoogleMaps, private platform: Platform, private geolocation: Geolocation, private navCtrl: NavController, private mapdata: MapData, private events: Events) {
+  	let that = this;
 
-    let that = this;
-    
-    var user = firebase.auth().currentUser;
+  	firebase.database().ref('userProfile').on('value',
+	  function(userData) {
+	  	var getData = userData.val();
+	  	for (var key in getData) {
+	  		if(getData[key].email == that.userData.email) {
+	  			//that.userId = key;
+	  			var lat = getData[key].latitude;
+	  			var long = getData[key].longitude;
 
-    if (user) {
-      this.userEmail = user.email;
-    }
+	  			events.publish('userCoordinates', lat, long);
+	  		}
+	  	}
+	  });
 
-    firebase.database().ref('userProfile/'+user.uid+'/latitude').once('value').then(
-      function(latitude) {
-        console.log(latitude.val());
-        that.latitude = latitude.val();
-      });
+	  events.subscribe('userCoordinates', (lat, long) => {
+	  	this.userLat = lat;
+	  	this.userLong = long;
+	  	this.loadMap();
+	  }, (err) => { console.error(err); });
 
-    firebase.database().ref('userProfile/'+user.uid+'/longitude').once('value').then(
-      function(longitude) {
-        that.longitude = longitude.val();
-      });
-
-    events.subscribe('coordinates', (latitude, longitude) =>  {
-      this.latitude = latitude;
-      this.longitude = longitude;
-      this.loadMap();
-    }, (err) => {console.error(err);});
-
+	 //firebase.database().ref('userProfile')
   }
 
-    //ngAfterViewInit() {
-    // this.loadMap();
-    //}
-
-    loadMap() {
-         let location = new LatLng(this.latitude, this.longitude);
+  loadMap() {
+         let location = new LatLng(this.userLat, this.userLong);
          let element: HTMLElement = document.getElementById('map');
 
          let map: GoogleMap = this.googleMaps.create(element, {
@@ -110,8 +109,5 @@ export class MapPage {
         });
 
     }
-
-  
-  
 
 }

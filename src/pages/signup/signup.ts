@@ -33,7 +33,7 @@ export class SignupPage {
 	  if (!this.signupForm.valid){
 	    console.log(this.signupForm.value);
 	  } else {
-	    this.auth.signupUser(this.signupForm.value.email,this.signupForm.value.password,0,0,false,true)
+	    this.auth.signupUser(this.signupForm.value.email,this.signupForm.value.password,'0','0',false,false,false,false,false)
 	    .then(() => {
 	      this.loading.dismiss().then( () => {
 	        this.navCtrl.setRoot(HomePage);
