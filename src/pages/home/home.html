@@ -11,17 +11,31 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="home">
+<ion-content class="home">
   <div *ngIf='alertValue == true' class="home-container-active">
-    <div class="status">
-        <p>ALERT</p>
-        <p>someone inside your car</p>
+    <div class="status" style="font-size: 45pt;">
+      <ion-card style="height:190px">
+        <ion-card-header>
+          Current Status
+        </ion-card-header>
+        <ion-card-content>
+          The motion sensor detected that someone is in your car.
+        </ion-card-content>
+      </ion-card>
     </div>
 
-    <button ion-button block (click)="alertAuthorities()" class="alertBtn">Alert Authorities</button>
-    <button ion-button block (click)='reportSafe()' class="safeBtn">Report Safe</button>
-    <button ion-button block (click)="goToMap()" class="locationBtn">Check car location</button>
-    <button ion-button block (click)="disableSensor()" class="disableBtn">Disable sensor</button>
+    <div class="pos-bottom">
+      <div class="row">
+        <div class="col" style="padding:0;">
+          <button ion-button full (click)="alertAuthorities()" class="alertBtn"><img src="loc.png" alt=""><br>Alert Authorities</button>
+          <button ion-button full (click)='reportSafe()' class="safeBtn">Report Safe</button>
+        </div>
+        <div class="col" style="padding:0;">
+          <button ion-button full (click)="goToMap()" class="locationBtn">Check car location</button>
+          <button ion-button full (click)="disableSensor()" class="disableBtn">Disable sensor</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div *ngIf='alertValue == false && sensorDisabled == false' class="home-container-inactive">

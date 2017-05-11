@@ -10,20 +10,20 @@ page-home {
 		text-align: center;
    }
 
-   .home{
-   		background-color: #f2f3f4;
-   }
-
-	.alert{
-		background-color: red;
+	.home{
+		background-color: #f2f3f4;
 	}
 
-	.img{
-		position: absolute;
+	.btn-left{
+		width: 0%;
+	}
+
+	.btn-right{
+		width: 40%;
 	}
 
 	.button{
-		background-color: #107896;
+		height: 150px;
 	}
 
 }
