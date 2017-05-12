@@ -14,16 +14,41 @@ page-home {
 		background-color: #f2f3f4;
 	}
 
-	.btn-left{
-		width: 0%;
+	.button{
+		height: 150px;
+		display: block;
 	}
 
-	.btn-right{
-		width: 40%;
+	.text-on-bottom > .button-inner {
+		flex-direction: column;
 	}
 
 	.button{
-		height: 150px;
+		display: block;
 	}
+
+	.button-inner {
+		display: block !important;
+	}
+
+	.span{
+		display: block;
+		width: 100%;
+		font-size: 40pt;
+	}
+
+	.blk{
+		display: block;
+		width: 100%;
+		font-size: 45pt;
+		padding-top: 20px;
+		padding-bottom: 5px;
+	}
+
+	.ion-icon{
+		display: block;
+		width: 100%;
+	}
+
 
 }

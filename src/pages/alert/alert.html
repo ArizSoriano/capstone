@@ -12,26 +12,60 @@
 
 </ion-header>
 
-
-<ion-content padding>
+<ion-content>
 
 	<div class="prompt" *ngIf='reported == false && policeConfirmed == false'>
-		<p>Are you sure you want to alert the authorities?</p>
-		<p>This will send out your car's location blabla</p>
-		<button ion-button block (click)="report()" navPop>Yes</button>
-		<button ion-button block navPop>Back to home</button>
+		<div class="status">
+	      <ion-card style="height:190px">
+	        <div class="card-title">
+	          Are you sure you want to report this?
+	        </div>
+	        <div class="card-subtitle">
+	          This will send out your car's location to the authorities.
+	        </div>
+	      </ion-card>
+	    </div>
+		
+		<div class="pos-bottom">
+			<button ion-button block (click)="report()" navPop>Yes</button>
+			<button ion-button block navPop>Back to home</button>
+		</div>
 	</div>
 
-	<div class="waiting" *ngIf='reported == true && policeConfirmed == false'>
-		<p>We have already notified the authorities. Awaiting their response.</p>
 
-		<button ion-button block (click)="cancelReport()">Cancel</button>
+
+	<div class="waiting" *ngIf='reported == true && policeConfirmed == false'>
+		<div class="status">
+	      <ion-card style="height:190px">
+	        <div class="card-title">
+	          Current Status
+	        </div>
+	        <div class="card-subtitle">
+	          We have already notified the authorities of the situation. Awaiting their confirmation.
+	        </div>
+	      </ion-card>
+	    </div>
+		
+		<div class="pos-bottom">
+			<button ion-button block (click)="cancelReport()">Cancel</button>
+		</div>
 	</div>
 
 	<div class="confirmed" *ngIf='policeConfirmed == true'>
-		<p>The authorities are on it blabla</p>
+		<div class="status">
+	      <ion-card style="height:190px">
+	        <div class="card-title">
+	          Current Status
+	        </div>
+	        <div class="card-subtitle">
+	          The authorities have confirmed that they've seen your report.
+	        </div>
+	      </ion-card>
+	    </div>
 
-		<button ion-button block>Report safe</button>
+		<div class="pos-bottom">
+			<button ion-button block>Report safe</button>
+		</div>
 	</div>
 
 </ion-content>
